@@ -23,4 +23,14 @@ public class ConnectFourAI {
 
         return -1;
     }
+
+    /**
+     * Heuristic Function, finds the longest sequence on the board given a new piece placement and returns
+     * a score value based on the length of the longest sequence that isn't block by an opponents piece.
+     * This is used by max and min to find the best spots to place or block placement.
+     */
+    private int FindLongestSequence() {
+        
+        return -1;
+    }
 }
