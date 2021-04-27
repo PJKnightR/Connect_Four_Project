@@ -9,16 +9,16 @@ public class ConnectFourAI {
      * @return the index of the column to place a piece within
      */
     public int AlphaBetaSearch(char[][] state, int depth) {
-        return MaxValue(state, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        return MaxValue(state, Integer.MIN_VALUE, Integer.MAX_VALUE, depth);
     }
 
-    private int MaxValue(char[][] state, int alpha, int beta) {
+    private int MaxValue(char[][] state, int alpha, int beta, int depth) {
         //TO-DO: Implement Max Value Method
 
         return -1;
     }
 
-    private int MinValue(char[][] state, int alpha, int beta) {
+    private int MinValue(char[][] state, int alpha, int beta, int depth) {
         //TO-DO: Implement Min Value Method
 
         return -1;
