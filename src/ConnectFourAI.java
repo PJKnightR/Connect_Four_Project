@@ -30,7 +30,8 @@ public class ConnectFourAI {
      * This is used by max and min to find the best spots to place or block placement.
      */
     private int FindLongestSequence() {
-        
+        //TO-DO: Implement Find Longest Sequence Method
+
         return -1;
     }
 }
