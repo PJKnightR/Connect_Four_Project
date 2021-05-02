@@ -116,9 +116,82 @@ public class ConnectFourAI {
             }
         }
 
-        //right diagonal
+        //upward diagonal
+        for (int row = 3; row < state.length; row++) {
+            for (int col = 0; col < state[0].length - 3; col++) {
 
-        //left diagonal
+                //found first piece
+                if (state[row][col] == 'B') {
+
+                    //found second piece
+                    if (state[row - 1][col + 1] == 'B') {
+
+                        //found third piece
+                        if (state[row - 2][col + 2] == 'B') {
+
+                            //found fourth piece
+                            if (state[row - 3][col + 3] == 'B') {
+                                return 10000;
+
+                                //check if a fourth piece can be used here
+                            }  else if (state[row - 3][col + 3] != 'R') {
+                                if (longestSequenceScore < 16) {
+                                    longestSequenceScore = 16;
+                                }
+                            }
+                            //check if a third and fourth piece can be used here
+                        }  else if (state[row - 2][col + 2] != 'R' && state[row - 3][col + 3] != 'R') {
+                            if (longestSequenceScore < 4) {
+                                longestSequenceScore = 4;
+                            }
+                        }
+                        //check if a second, third, and fourth piece can be used here
+                    } else if (state[row - 1][col + 1] != 'R' && state[row - 2][col + 2] != 'R' && state[row - 3][col + 3] != 'R') {
+                        if (longestSequenceScore < 1) {
+                            longestSequenceScore = 1;
+                        }
+                    }
+                }
+            }
+        }
+
+        //downward diagonal
+        for (int row = 0; row < state.length - 3; row++) {
+            for (int col = 0; col < state[0].length - 3; col++) {
+                //found first piece
+                if (state[row][col] == 'B') {
+
+                    //found second piece
+                    if (state[row + 1][col + 1] == 'B') {
+
+                        //found third piece
+                        if (state[row + 2][col + 2] == 'B') {
+
+                            //found fourth piece
+                            if (state[row + 3][col + 3] == 'B') {
+                                return 10000;
+
+                                //check if a fourth piece can be used here
+                            }  else if (state[row + 3][col + 3] != 'R') {
+                                if (longestSequenceScore < 16) {
+                                    longestSequenceScore = 16;
+                                }
+                            }
+                            //check if a third and fourth piece can be used here
+                        }  else if (state[row + 2][col + 2] != 'R' && state[row + 3][col + 3] != 'R') {
+                            if (longestSequenceScore < 4) {
+                                longestSequenceScore = 4;
+                            }
+                        }
+                        //check if a second, third, and fourth piece can be used here
+                    } else if (state[row + 1][col + 1] != 'R' && state[row + 2][col + 2] != 'R' && state[row + 3][col + 3] != 'R') {
+                        if (longestSequenceScore < 1) {
+                            longestSequenceScore = 1;
+                        }
+                    }
+                }
+            }
+        }
 
         return longestSequenceScore;
     }
