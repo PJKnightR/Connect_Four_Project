@@ -57,15 +57,30 @@ public class ConnectFourGame {
             winner = isWinner(player);
 
             //switch players
-            /*if (player == 'R'){
+            if (player == 'R'){
                 player = 'B';
             }else{
                 player = 'R';
-            }*/
+            }
 
-            computerAI.AlphaBetaSearch(board, 1);
+            play = computerAI.AlphaBetaSearch(board, 1);
+
+            //drop the checker
+            for (int row = board.length-1; row >= 0; row--){
+                if(board[row][play] == ' '){
+                    board[row][play] = player;
+                    break;
+                }
+            }
 
             winner = isWinner(player);
+
+            //switch players
+            if (player == 'R'){
+                player = 'B';
+            }else{
+                player = 'R';
+            }
 
             turn++;
         }
