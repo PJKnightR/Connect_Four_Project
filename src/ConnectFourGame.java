@@ -7,6 +7,7 @@ public class ConnectFourGame {
     public int MAX_TURNS = 42;
     private Scanner input;
     public char[][] board;
+    public ConnectFourAI computerAI;
 
     /**
      * Initializes the Connect Four Board
@@ -14,6 +15,7 @@ public class ConnectFourGame {
     ConnectFourGame() {
         input = new Scanner(System.in);
         board = new char[NUM_ROWS][NUM_COLUMNS];
+        computerAI = new ConnectFourAI();
 
         //initialize board
         for (int row = 0; row < board.length; row++){
@@ -52,6 +54,25 @@ public class ConnectFourGame {
             }
 
             //determine if there is a winner
+            winner = isWinner(player);
+
+            //switch players
+            if (player == 'R'){
+                player = 'B';
+            }else{
+                player = 'R';
+            }
+
+            play = computerAI.AlphaBetaSearch(board, 1);
+
+            //drop the checker
+            for (int row = board.length-1; row >= 0; row--){
+                if(board[row][play] == ' '){
+                    board[row][play] = player;
+                    break;
+                }
+            }
+
             winner = isWinner(player);
 
             //switch players
