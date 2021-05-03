@@ -73,6 +73,8 @@ public class ConnectFourGame {
                 }
             }
 
+            displayBoard();
+
             winner = isWinner(player);
 
             //switch players
