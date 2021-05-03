@@ -1,4 +1,5 @@
 //TO-DO: Integrate AI functionality into game
+import java.lang.Math;
 
 public class ConnectFourAI {
 
@@ -13,15 +14,59 @@ public class ConnectFourAI {
     }
 
     private int MaxValue(char[][] state, int alpha, int beta, int depth) {
-        //TO-DO: Implement Max Value Method
+        if(depth == 0){
+            char[][] temp = new char[state.length][state[0].length];
+            for (int k = 0; k < state.length; k++){
+                System.arraycopy(state[k], 0, temp[k], 0, state[k].length);
+            }
+            return MinValue(temp, alpha, beta, depth-1);
+        }
 
-        return -1;
+        int v = Integer.MIN_VALUE;
+        for(int i = 0; i < state.length; i++){
+            for (int j = 0; j < state[i].length; j++) {
+                //if the square is a valid move
+                if( (i== state.length -1 || state[i-1][j] != ' ') && state[i][j] == ' '){
+                    char[][] temp = new char[state.length][state[i].length];
+                    for (int k = 0; k < state.length; k++){
+                        System.arraycopy(state[k], 0, temp[k], 0, state[k].length);
+                    }
+                    v = MinValue(temp, alpha, beta, depth-1);
+
+                    if(v >= beta) return v;
+                    alpha = Math.max(alpha, v);
+                }
+            }
+        }
+        return v;
     }
 
     private int MinValue(char[][] state, int alpha, int beta, int depth) {
-        //TO-DO: Implement Min Value Method
+        if(depth == 0){
+            char[][] temp = new char[state.length][state[0].length];
+            for (int k = 0; k < state.length; k++){
+                System.arraycopy(state[k], 0, temp[k], 0, state[k].length);
+            }
+            return MaxValue(temp, alpha, beta, depth-1);
+        }
 
-        return -1;
+        int v = Integer.MAX_VALUE;
+        for(int i = 0; i < state.length; i++){
+            for (int j = 0; j < state[i].length; j++) {
+                //if the square is a valid move
+                if( (i== state.length -1 || state[i-1][j] != ' ') && state[i][j] == ' '){
+                    char[][] temp = new char[state.length][state[i].length];
+                    for (int k = 0; k < state.length; k++){
+                        System.arraycopy(state[k], 0, temp[k], 0, state[k].length);
+                    }
+                    v = MinValue(temp, alpha, beta, depth-1);
+
+                    if(v <= alpha) return v;
+                    beta = Math.min(beta, v);
+                }
+            }
+        }
+        return v;
     }
 
     /**
