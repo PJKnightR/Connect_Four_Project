@@ -7,7 +7,7 @@ public class ConnectFourMain {
         boolean isPlaying = true;
 
         while (isPlaying) {
-            ConnectFourGame game = new ConnectFourGame();
+            ConnectFourGame game = new ConnectFourGame(1, 4, 2, 9);
             game.StartGame();
 
             System.out.println("Enter 'R' to play again, or anything else to Quit.");

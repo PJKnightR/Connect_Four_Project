@@ -10,6 +10,7 @@ public class ConnectFourGame {
     public ConnectFourAI computerAI;
     public int player1AI, player2AI;
     public int alphaBetaSearchDepth;
+    public int remainingRuns;
 
     /**
      * Initializes the Connect Four Board
@@ -20,6 +21,7 @@ public class ConnectFourGame {
         computerAI = new ConnectFourAI();
         player1AI = 0;
         player2AI = 0;
+        remainingRuns = 0;
 
         //initialize board
         for (int row = 0; row < board.length; row++){
@@ -30,6 +32,26 @@ public class ConnectFourGame {
 
         player1AI = initializePlayer(1);
         player2AI = initializePlayer(2);
+    }
+
+    /**
+     * Initializes the Connect Four Board
+     */
+    ConnectFourGame(int player1AIType, int player2AIType, int depth, int runsLeft) {
+        input = new Scanner(System.in);
+        board = new char[NUM_ROWS][NUM_COLUMNS];
+        computerAI = new ConnectFourAI();
+        player1AI = player1AIType;
+        player2AI = player2AIType;
+        alphaBetaSearchDepth = depth;
+        remainingRuns = runsLeft;
+
+        //initialize board
+        for (int row = 0; row < board.length; row++){
+            for (int col = 0; col < board[0].length; col++){
+                board[row][col] = ' ';
+            }
+        }
     }
 
     /**
@@ -129,6 +151,11 @@ public class ConnectFourGame {
             }
         } else {
             System.out.println("Tie game");
+        }
+
+        if (remainingRuns > 0) {
+            ConnectFourGame game = new ConnectFourGame(player1AI, player2AI, alphaBetaSearchDepth, remainingRuns - 1);
+            game.StartGame();
         }
     }
 
