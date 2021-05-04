@@ -1,6 +1,11 @@
 //TO-DO: Integrate AI functionality into game
 
+import java.util.ArrayList;
+
 public class ConnectFourAI {
+
+    public int NUM_ROWS = 6;
+    public int NUM_COLUMNS = 7;
 
     /**
      * Returns the index of the column to place a piece within
@@ -35,11 +40,9 @@ public class ConnectFourAI {
     private int FindLongestSequence(char[][] state, char curColor, char opponentColor) {
         int longestSequenceScore = 0;
 
-        //TO-DO: Implement Find Longest Sequence Method
-
         //by row
         for (int row = 0; row < state.length; row++) {
-            for (int col = 0; col < state[0].length - 3; col++) {
+            for (int col = 0; col < state[0].length; col++) {
                 //if we find one piece, check for another or empty. Continue til we would get to 4
 
                 //found first piece
@@ -56,21 +59,35 @@ public class ConnectFourAI {
                                 return 10000;
 
                                 //check if a fourth piece can be used here
-                            }  else if (state[row][col + 3] != opponentColor) {
-                                if (longestSequenceScore < 16) {
-                                    longestSequenceScore = 16;
+                            } else if (col < 4) {
+                                if (state[row][col + 3] != opponentColor) {
+                                    longestSequenceScore = updateScore(longestSequenceScore, 16);
+                                }
+                            } else {
+                                if (state[row][col - 3] != opponentColor) {
+                                    longestSequenceScore = updateScore(longestSequenceScore, 16);
                                 }
                             }
+
                             //check if a third and fourth piece can be used here
-                        }  else if (state[row][col + 2] != opponentColor && state[row][col + 3] != opponentColor) {
-                            if (longestSequenceScore < 4) {
-                                longestSequenceScore = 4;
+                        } else if (col < 4) {
+                            if (state[row][col - 2] != opponentColor && state[row][col - 3] != opponentColor) {
+                                longestSequenceScore = updateScore(longestSequenceScore, 4);
+                            }
+                        } else {
+                            if (state[row][col - 2] != opponentColor && state[row][col - 3] != opponentColor) {
+                                longestSequenceScore = updateScore(longestSequenceScore, 4);
                             }
                         }
+
                         //check if a second, third, and fourth piece can be used here
-                    } else if (state[row][col + 1] != opponentColor && state[row][col + 2] != opponentColor && state[row][col + 3] != opponentColor) {
-                        if (longestSequenceScore < 1) {
-                            longestSequenceScore = 1;
+                    } else if (col < 4) {
+                        if (state[row][col + 1] != opponentColor && state[row][col + 2] != opponentColor && state[row][col + 3] != opponentColor) {
+                            longestSequenceScore = updateScore(longestSequenceScore, 4);
+                        }
+                    } else {
+                        if (state[row][col - 1] != opponentColor && state[row][col - 2] != opponentColor && state[row][col - 3] != opponentColor) {
+                            longestSequenceScore = updateScore(longestSequenceScore, 4);
                         }
                     }
                 }
@@ -96,21 +113,33 @@ public class ConnectFourAI {
                                 return 10000;
 
                                 //check if a fourth piece can be used here
-                            }  else if (state[row + 3][col] != opponentColor) {
-                                if (longestSequenceScore < 16) {
-                                    longestSequenceScore = 16;
+                            } else if (row < 3) {
+                                if (state[row + 3][col] != opponentColor) {
+                                    longestSequenceScore = updateScore(longestSequenceScore, 16);
+                                }
+                            } else {
+                                if (state[row - 3][col] != opponentColor) {
+                                    longestSequenceScore = updateScore(longestSequenceScore, 16);
                                 }
                             }
                             //check if a third and fourth piece can be used here
-                        }  else if (state[row + 2][col] != opponentColor && state[row + 3][col] != opponentColor) {
-                            if (longestSequenceScore < 4) {
-                                longestSequenceScore = 4;
+                        } else if (row < 3) {
+                            if (state[row + 2][col] != opponentColor && state[row + 3][col] != opponentColor) {
+                                longestSequenceScore = updateScore(longestSequenceScore, 4);
+                            }
+                        } else {
+                            if (state[row - 2][col] != opponentColor && state[row - 3][col] != opponentColor) {
+                                longestSequenceScore = updateScore(longestSequenceScore, 4);
                             }
                         }
                         //check if a second, third, and fourth piece can be used here
-                    } else if (state[row + 1][col] != opponentColor && state[row + 2][col] != opponentColor && state[row + 3][col] != opponentColor) {
-                        if (longestSequenceScore < 1) {
-                            longestSequenceScore = 1;
+                    } else if (row < 3) {
+                        if (state[row + 1][col] != opponentColor && state[row + 2][col] != opponentColor && state[row + 3][col] != opponentColor) {
+                            longestSequenceScore = updateScore(longestSequenceScore, 1);
+                        }
+                    } else {
+                        if (state[row - 1][col] != opponentColor && state[row - 2][col] != opponentColor && state[row - 3][col] != opponentColor) {
+                            longestSequenceScore = updateScore(longestSequenceScore, 1);
                         }
                     }
                 }
@@ -136,21 +165,15 @@ public class ConnectFourAI {
 
                                 //check if a fourth piece can be used here
                             }  else if (state[row - 3][col + 3] != opponentColor) {
-                                if (longestSequenceScore < 16) {
-                                    longestSequenceScore = 16;
-                                }
+                                longestSequenceScore = updateScore(longestSequenceScore, 16);
                             }
                             //check if a third and fourth piece can be used here
                         }  else if (state[row - 2][col + 2] != opponentColor && state[row - 3][col + 3] != opponentColor) {
-                            if (longestSequenceScore < 4) {
-                                longestSequenceScore = 4;
-                            }
+                            longestSequenceScore = updateScore(longestSequenceScore, 4);
                         }
                         //check if a second, third, and fourth piece can be used here
                     } else if (state[row - 1][col + 1] != opponentColor && state[row - 2][col + 2] != opponentColor && state[row - 3][col + 3] != opponentColor) {
-                        if (longestSequenceScore < 1) {
-                            longestSequenceScore = 1;
-                        }
+                        longestSequenceScore = updateScore(longestSequenceScore, 1);
                     }
                 }
             }
@@ -174,26 +197,155 @@ public class ConnectFourAI {
 
                                 //check if a fourth piece can be used here
                             }  else if (state[row + 3][col + 3] != opponentColor) {
-                                if (longestSequenceScore < 16) {
-                                    longestSequenceScore = 16;
-                                }
+                                longestSequenceScore = updateScore(longestSequenceScore, 16);
                             }
                             //check if a third and fourth piece can be used here
                         }  else if (state[row + 2][col + 2] != opponentColor && state[row + 3][col + 3] != opponentColor) {
-                            if (longestSequenceScore < 4) {
-                                longestSequenceScore = 4;
-                            }
+                            longestSequenceScore = updateScore(longestSequenceScore, 4);
                         }
                         //check if a second, third, and fourth piece can be used here
                     } else if (state[row + 1][col + 1] != opponentColor && state[row + 2][col + 2] != opponentColor && state[row + 3][col + 3] != opponentColor) {
-                        if (longestSequenceScore < 1) {
-                            longestSequenceScore = 1;
-                        }
+                        longestSequenceScore = updateScore(longestSequenceScore, 1);
                     }
                 }
             }
         }
 
         return longestSequenceScore;
+    }
+
+    private int updateScore(int oldScore, int newScore) {
+        if (newScore > oldScore) {
+            return newScore;
+        } else {
+            return oldScore;
+        }
+    }
+
+    /**
+     * An AI the chooses a purely random column to drop pieces in
+     * @return the index of the column to place a piece in
+     */
+    public int randomSelection() {
+        return (int) (Math.random() * 7);
+    }
+
+    public int blockOpponentPiece(char[][] state, char opponentColor) {
+        //by row
+        for (int row = 0; row < state.length; row++) {
+            for (int col = 0; col < state[0].length; col++) {
+                if (col < 4) {
+                    if (state[row][col] == opponentColor && state[row][col + 1] == opponentColor && state[row][col + 2] == opponentColor && state[row][col + 3] == ' ') {
+                        return col + 3;
+                    }
+                } else {
+                    if (state[row][col] == opponentColor && state[row][col - 1] == opponentColor && state[row][col - 2] == opponentColor && state[row][col - 3] == ' ') {
+                        return col - 3;
+                    }
+                }
+            }
+        }
+
+        //by column
+        for (int row = 0; row < state.length; row++) {
+            for (int col = 0; col < state[0].length; col++) {
+                if (row < 3) {
+                    if (state[row][col] == opponentColor && state[row + 1][col] == opponentColor && state[row + 2][col] == opponentColor && state[row + 3][col] == ' ') {
+                        return col;
+                    }
+                } else {
+                    if (state[row][col] == opponentColor && state[row - 1][col] == opponentColor && state[row - 2][col] == opponentColor && state[row - 3][col] == ' ') {
+                        return col;
+                    }
+                }
+            }
+        }
+
+        //upward diagonal
+        for (int row = 3; row < state.length; row++) {
+            for (int col = 0; col < state[0].length - 3; col++) {
+                if (state[row][col] == opponentColor && state[row - 1][col + 1] == opponentColor && state[row - 2][col + 2] == opponentColor && state[row - 3][col + 3] == ' ') {
+                    return col + 3;
+                }
+            }
+        }
+
+        //downward diagonal
+        for (int row = 0; row < state.length - 3; row++) {
+            for (int col = 0; col < state[0].length - 3; col++) {
+                if (state[row][col] == opponentColor && state[row + 1][col + 1] == opponentColor && state[row + 2][col + 2] == opponentColor && state[row + 3][col + 3] == ' ') {
+                    return col + 3;
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    public int randomSelectionBlocking(char[][] state, char curColor, char opponentColor) {
+        int play = blockOpponentPiece(state, opponentColor);
+        if (play != -1) {
+            return play;
+        } else {
+            return randomSelection();
+        }
+    }
+
+    public int randomSelectionBlockingPrioritization(char[][] state, char curColor, char opponentColor) {
+        int play = blockOpponentPiece(state, opponentColor);
+
+        if (play != -1) {
+            return play;
+        } else {
+            //by row
+            for (int row = 0; row < state.length; row++) {
+                for (int col = 0; col < state[0].length; col++) {
+                    if (col < 4) {
+                        if (state[row][col] == curColor && state[row][col + 1] == curColor && state[row][col + 2] == curColor && state[row][col + 3] == ' ') {
+                            return col + 3;
+                        }
+                    } else {
+                        if (state[row][col] == curColor && state[row][col - 1] == curColor && state[row][col - 2] == curColor && state[row][col - 3] == ' ') {
+                            return col - 3;
+                        }
+                    }
+                }
+            }
+
+            //by column
+            for (int row = 0; row < state.length; row++) {
+                for (int col = 0; col < state[0].length; col++) {
+                    if (row < 3) {
+                        if (state[row][col] == curColor && state[row + 1][col] == curColor && state[row + 2][col] == curColor && state[row + 3][col] == ' ') {
+                            return col;
+                        }
+                    } else {
+                        if (state[row][col] == curColor && state[row - 1][col] == curColor && state[row - 2][col] == curColor && state[row - 3][col] == ' ') {
+                            return col;
+                        }
+                    }
+                }
+            }
+
+            //upward diagonal
+            for (int row = 3; row < state.length; row++) {
+                for (int col = 0; col < state[0].length - 3; col++) {
+                    if (state[row][col] == curColor && state[row - 1][col + 1] == curColor && state[row - 2][col + 2] == curColor && state[row - 3][col + 3] == ' ') {
+                        return col + 3;
+                    }
+                }
+            }
+
+            //downward diagonal
+            for (int row = 0; row < state.length - 3; row++) {
+                for (int col = 0; col < state[0].length - 3; col++) {
+                    if (state[row][col] == curColor && state[row + 1][col + 1] == curColor && state[row + 2][col + 2] == curColor && state[row + 3][col + 3] == ' ') {
+                        return col + 3;
+                    }
+                }
+            }
+        }
+
+        return randomSelection();
     }
 }

@@ -11,7 +11,7 @@ public class ConnectFourMain {
             game.StartGame();
 
             System.out.println("Enter 'R' to play again, or anything else to Quit.");
-            if(!input.nextLine().equals("R")) {
+            if(!input.nextLine().equalsIgnoreCase("R")) {
                 isPlaying = false;
             }
         }
