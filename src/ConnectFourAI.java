@@ -124,7 +124,7 @@ public class ConnectFourAI {
                         p = 'R';
                     }
 
-                    v = MinValue(temp, alpha, beta, depth-1, p);
+                    v = MaxValue(temp, alpha, beta, depth-1, p);
 
                     if(v <= alpha) return v;
                     beta = Math.min(beta, v);
