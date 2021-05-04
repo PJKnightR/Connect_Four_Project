@@ -8,6 +8,8 @@ public class ConnectFourAI {
     public int NUM_ROWS = 6;
     public int NUM_COLUMNS = 7;
     int LOW_SCORE = 1, MEDIUM_SCORE = 4, HIGH_SCORE = 16, MAX_SCORE = 10000;
+    private final int MAX_H_SCORE = 10000;
+    private final int MIN_H_SCORE = 1;
 
     /**
      * Returns the index of the column to place a piece within
@@ -16,10 +18,9 @@ public class ConnectFourAI {
      * @return the index of the column to place a piece within
      */
     public int AlphaBetaSearch(char[][] state, int depth, char player) {
-        int max = MaxValue(state, Integer.MIN_VALUE, Integer.MAX_VALUE, depth, player);
-        int bestMove = -1;
+        int[] res = MaxValue(state, Integer.MIN_VALUE, Integer.MAX_VALUE, depth, player);
 
-
+/*
         for(int i =  state.length-1; i >= 0; i--){
             for (int j = 0; j < state[i].length; j++) {
                 if(state[i][j] == ' '){
@@ -44,13 +45,13 @@ public class ConnectFourAI {
                     }
                 }
             }
-        }
+        }*/
 
 
-        return -1;
+        return res[1];
     }
 
-    private int MaxValue(char[][] state, int alpha, int beta, int depth, char player) {
+    private int[] MaxValue(char[][] state, int alpha, int beta, int depth, char player) {
         if(depth == 0){
             char p = 'x';
             if (player == 'R'){
@@ -59,10 +60,11 @@ public class ConnectFourAI {
                 p = 'R';
             }
 
-            return FindLongestSequence(state, player, p);
+            return new int[]{FindLongestSequence(state, player, p), -1};
         }
 
         int v = Integer.MIN_VALUE;
+        int move = -1;
         for(int i = state.length -1; i >= 0; i--){
             for (int j = 0; j < state[i].length; j++) {
                 //if the square is a valid move
@@ -80,17 +82,21 @@ public class ConnectFourAI {
                         p = 'R';
                     }
 
-                    v = MinValue(temp, alpha, beta, depth-1, p);
+                    int min = MinValue(temp, alpha, beta, depth-1, p)[0];
+                    if(min > v) {
+                        v= min;
+                        move = j;
+                    }
 
-                    if(v >= beta) return v;
+                    if(v >= beta || v == MAX_H_SCORE) return new int[]{v, move};
                     alpha = Math.max(alpha, v);
                 }
             }
         }
-        return v;
+        return new int[]{v, move};
     }
 
-    private int MinValue(char[][] state, int alpha, int beta, int depth, char player) {
+    private int[] MinValue(char[][] state, int alpha, int beta, int depth, char player) {
         if(depth == 0){
             char[][] temp = new char[state.length][state[0].length];
             for (int k = 0; k < state.length; k++){
@@ -103,10 +109,11 @@ public class ConnectFourAI {
                 p = 'R';
             }
 
-            return FindLongestSequence(temp, p, player);
+            return new int[]{FindLongestSequence(state, p, player), -1};
         }
 
         int v = Integer.MAX_VALUE;
+        int move = -1;
         for(int i = state.length -1; i >= 0; i--){
             for (int j = 0; j < state[i].length; j++) {
                 //if the square is a valid move
@@ -124,14 +131,18 @@ public class ConnectFourAI {
                         p = 'R';
                     }
 
-                    v = MaxValue(temp, alpha, beta, depth-1, p);
+                    int max = MaxValue(temp, alpha, beta, depth-1, p)[0];
+                    if(max > v) {
+                        v= max;
+                        move = j;
+                    }
 
-                    if(v <= alpha) return v;
+                    if(v <= alpha || v <= MIN_H_SCORE) return new int[]{v, move};
                     beta = Math.min(beta, v);
                 }
             }
         }
-        return v;
+        return new int[]{v, move};
     }
 
     /**
