@@ -30,7 +30,14 @@ public class ConnectFourAI {
                     }
                     temp[i][j] = player;
 
-                    int h = FindLongestSequence(temp);
+                    char p = 'x';
+                    if (player == 'R'){
+                        p = 'B';
+                    }else{
+                        p = 'R';
+                    }
+
+                    int h = FindLongestSequence(temp, player, p);
 
                     if(h==max){
                         return j;
@@ -45,7 +52,14 @@ public class ConnectFourAI {
 
     private int MaxValue(char[][] state, int alpha, int beta, int depth, char player) {
         if(depth == 0){
-            return FindLongestSequence(state);
+            char p = 'x';
+            if (player == 'R'){
+                p = 'B';
+            }else{
+                p = 'R';
+            }
+
+            return FindLongestSequence(state, player, p);
         }
 
         int v = Integer.MIN_VALUE;
@@ -82,7 +96,14 @@ public class ConnectFourAI {
             for (int k = 0; k < state.length; k++){
                 System.arraycopy(state[k], 0, temp[k], 0, state[k].length);
             }
-            return FindLongestSequence(temp);
+            char p = 'x';
+            if (player == 'R'){
+                p = 'B';
+            }else{
+                p = 'R';
+            }
+
+            return FindLongestSequence(temp, p, player);
         }
 
         int v = Integer.MAX_VALUE;

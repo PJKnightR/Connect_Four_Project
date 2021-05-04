@@ -154,7 +154,13 @@ public class ConnectFourGame {
             } while (!validateMove(play));
         } else if (playerTypeID == 4) {
             do {
-                play = computerAI.AlphaBetaSearch(board, 1);
+                char p = 'x';
+                if (playerID == 1){
+                    p = 'B';
+                }else{
+                    p = 'R';
+                }
+                play = computerAI.AlphaBetaSearch(board, 1, p);
             } while (!validateMove(play));
         } else {
             do {
