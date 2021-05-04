@@ -9,6 +9,7 @@ public class ConnectFourGame {
     public char[][] board;
     public ConnectFourAI computerAI;
     public int player1AI, player2AI;
+    public int alphaBetaSearchDepth;
 
     /**
      * Initializes the Connect Four Board
@@ -47,16 +48,24 @@ public class ConnectFourGame {
         if (choice == 1) {
             return 0;
         } else {
-            System.out.println("Choose an AI for Player " + playerNum + ":\n1.\tRandom Selection AI\n2.\tRandom Selection with Blocking AI\n3.\tRandom Selection with Blocking and Prioritization AI\n-1.\tCancel");
+            System.out.println("Choose an AI for Player " + playerNum + ":\n1.\tRandom Selection AI\n2.\tRandom Selection with Blocking AI\n3.\tRandom Selection with Blocking and Prioritization AI\n4.\tAlpha-Beta Pruning AI\n-1.\tCancel");
 
             choice = input.nextInt();
-            while (choice > 3 || choice < -1 || choice == 0) {
+            while (choice > 4 || choice < -1 || choice == 0) {
                 System.out.println("Please enter a valid option number.");
                 choice = input.nextInt();
             }
 
             if (choice == -1) {
                 return initializePlayer(playerNum);
+            } else if (choice == 4) {
+                System.out.println("Enter the depth for alpha-beta to search. (No more then 9 recommended) (Caps off at 10 due to poor performance)");
+
+                int depth = input.nextInt();
+                while (depth < 1 || depth > 10) {
+                    depth = input.nextInt();
+                }
+                alphaBetaSearchDepth = depth;
             }
 
             return choice;
@@ -160,7 +169,7 @@ public class ConnectFourGame {
                 }else{
                     p = 'R';
                 }
-                play = computerAI.AlphaBetaSearch(board, 1, p);
+                play = computerAI.AlphaBetaSearch(board, alphaBetaSearchDepth, p);
             } while (!validateMove(play));
         } else {
             do {

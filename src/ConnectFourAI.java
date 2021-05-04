@@ -153,45 +153,54 @@ public class ConnectFourAI {
                 //found first piece
                 if (state[row][col] == curColor) {
 
-                    //found second piece
-                    if (state[row][col + 1] == curColor) {
+                    if (col < 4) {
+                        //found second piece
+                        if (state[row][col + 1] == curColor) {
 
-                        //found third piece
-                        if (state[row][col + 2] == curColor) {
+                            //found third piece
+                            if (state[row][col + 2] == curColor) {
 
-                            //found fourth piece
-                            if (state[row][col + 3] == curColor) {
-                                return MAX_SCORE;
+                                //found fourth piece
+                                if (state[row][col + 3] == curColor) {
+                                    return MAX_SCORE;
 
-                                //check if a fourth piece can be used here
-                            } else if (col < 4) {
-                                if (state[row][col + 3] != opponentColor) {
+                                    //check if a fourth piece can be used here
+                                } else if (state[row][col + 3] != opponentColor) {
                                     longestSequenceScore = updateScore(longestSequenceScore, HIGH_SCORE);
                                 }
-                            } else {
-                                if (state[row][col - 3] != opponentColor) {
-                                    longestSequenceScore = updateScore(longestSequenceScore, HIGH_SCORE);
-                                }
-                            }
 
-                            //check if a third and fourth piece can be used here
-                        } else if (col < 4) {
-                            if (state[row][col - 2] != opponentColor && state[row][col - 3] != opponentColor) {
+                                //check if a third and fourth piece can be used here
+                            } else if (state[row][col + 2] != opponentColor && state[row][col + 3] != opponentColor) {
                                 longestSequenceScore = updateScore(longestSequenceScore, MEDIUM_SCORE);
                             }
-                        } else {
-                            if (state[row][col - 2] != opponentColor && state[row][col - 3] != opponentColor) {
-                                longestSequenceScore = updateScore(longestSequenceScore, MEDIUM_SCORE);
-                            }
-                        }
 
-                        //check if a second, third, and fourth piece can be used here
-                    } else if (col < 4) {
-                        if (state[row][col + 1] != opponentColor && state[row][col + 2] != opponentColor && state[row][col + 3] != opponentColor) {
+                            //check if a second, third, and fourth piece can be used here
+                        } else if (state[row][col + 1] != opponentColor && state[row][col + 2] != opponentColor && state[row][col + 3] != opponentColor) {
                             longestSequenceScore = updateScore(longestSequenceScore, LOW_SCORE);
                         }
                     } else {
-                        if (state[row][col - 1] != opponentColor && state[row][col - 2] != opponentColor && state[row][col - 3] != opponentColor) {
+                        //found second piece
+                        if (state[row][col - 1] == curColor) {
+
+                            //found third piece
+                            if (state[row][col - 2] == curColor) {
+
+                                //found fourth piece
+                                if (state[row][col - 3] == curColor) {
+                                    return MAX_SCORE;
+
+                                    //check if a fourth piece can be used here
+                                } if (state[row][col - 3] != opponentColor) {
+                                    longestSequenceScore = updateScore(longestSequenceScore, HIGH_SCORE);
+                                }
+
+                                //check if a third and fourth piece can be used here
+                            } else if (state[row][col - 2] != opponentColor && state[row][col - 3] != opponentColor) {
+                                longestSequenceScore = updateScore(longestSequenceScore, MEDIUM_SCORE);
+                            }
+
+                            //check if a second, third, and fourth piece can be used here
+                        } else if (state[row][col - 1] != opponentColor && state[row][col - 2] != opponentColor && state[row][col - 3] != opponentColor) {
                             longestSequenceScore = updateScore(longestSequenceScore, LOW_SCORE);
                         }
                     }
@@ -207,43 +216,50 @@ public class ConnectFourAI {
                 //found first piece
                 if (state[row][col] == curColor) {
 
-                    //found second piece
-                    if (state[row + 1][col] == curColor) {
+                    if (row < 3) {
+                        //found second piece
+                        if (state[row + 1][col] == curColor) {
 
-                        //found third piece
-                        if (state[row + 2][col] == curColor) {
+                            //found third piece
+                            if (state[row + 2][col] == curColor) {
 
-                            //found fourth piece
-                            if (state[row + 3][col] == curColor) {
-                                return MAX_SCORE;
+                                //found fourth piece
+                                if (state[row + 3][col] == curColor) {
+                                    return MAX_SCORE;
 
-                                //check if a fourth piece can be used here
-                            } else if (row < 3) {
-                                if (state[row + 3][col] != opponentColor) {
+                                    //check if a fourth piece can be used here
+                                } else if (state[row + 3][col] != opponentColor) {
                                     longestSequenceScore = updateScore(longestSequenceScore, HIGH_SCORE);
                                 }
-                            } else {
-                                if (state[row - 3][col] != opponentColor) {
-                                    longestSequenceScore = updateScore(longestSequenceScore, HIGH_SCORE);
-                                }
-                            }
-                            //check if a third and fourth piece can be used here
-                        } else if (row < 3) {
-                            if (state[row + 2][col] != opponentColor && state[row + 3][col] != opponentColor) {
+                                //check if a third and fourth piece can be used here
+                            } else if (state[row + 2][col] != opponentColor && state[row + 3][col] != opponentColor) {
                                 longestSequenceScore = updateScore(longestSequenceScore, MEDIUM_SCORE);
                             }
-                        } else {
-                            if (state[row - 2][col] != opponentColor && state[row - 3][col] != opponentColor) {
-                                longestSequenceScore = updateScore(longestSequenceScore, MEDIUM_SCORE);
-                            }
-                        }
-                        //check if a second, third, and fourth piece can be used here
-                    } else if (row < 3) {
-                        if (state[row + 1][col] != opponentColor && state[row + 2][col] != opponentColor && state[row + 3][col] != opponentColor) {
+                            //check if a second, third, and fourth piece can be used here
+                        } else if (state[row + 1][col] != opponentColor && state[row + 2][col] != opponentColor && state[row + 3][col] != opponentColor) {
                             longestSequenceScore = updateScore(longestSequenceScore, LOW_SCORE);
                         }
                     } else {
-                        if (state[row - 1][col] != opponentColor && state[row - 2][col] != opponentColor && state[row - 3][col] != opponentColor) {
+                        //found second piece
+                        if (state[row - 1][col] == curColor) {
+
+                            //found third piece
+                            if (state[row - 2][col] == curColor) {
+
+                                //found fourth piece
+                                if (state[row - 3][col] == curColor) {
+                                    return MAX_SCORE;
+
+                                    //check if a fourth piece can be used here
+                                } else if (state[row - 3][col] != opponentColor) {
+                                    longestSequenceScore = updateScore(longestSequenceScore, HIGH_SCORE);
+                                }
+                                //check if a third and fourth piece can be used here
+                            } else if (state[row - 2][col] != opponentColor && state[row - 3][col] != opponentColor) {
+                                longestSequenceScore = updateScore(longestSequenceScore, MEDIUM_SCORE);
+                            }
+                            //check if a second, third, and fourth piece can be used here
+                        } else if (state[row - 1][col] != opponentColor && state[row - 2][col] != opponentColor && state[row - 3][col] != opponentColor) {
                             longestSequenceScore = updateScore(longestSequenceScore, LOW_SCORE);
                         }
                     }
