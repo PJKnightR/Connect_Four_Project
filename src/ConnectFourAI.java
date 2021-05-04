@@ -6,6 +6,7 @@ public class ConnectFourAI {
 
     public int NUM_ROWS = 6;
     public int NUM_COLUMNS = 7;
+    int LOW_SCORE = 1, MEDIUM_SCORE = 4, HIGH_SCORE = 16, MAX_SCORE = 10000;
 
     /**
      * Returns the index of the column to place a piece within
@@ -56,38 +57,38 @@ public class ConnectFourAI {
 
                             //found fourth piece
                             if (state[row][col + 3] == curColor) {
-                                return 10000;
+                                return MAX_SCORE;
 
                                 //check if a fourth piece can be used here
                             } else if (col < 4) {
                                 if (state[row][col + 3] != opponentColor) {
-                                    longestSequenceScore = updateScore(longestSequenceScore, 16);
+                                    longestSequenceScore = updateScore(longestSequenceScore, HIGH_SCORE);
                                 }
                             } else {
                                 if (state[row][col - 3] != opponentColor) {
-                                    longestSequenceScore = updateScore(longestSequenceScore, 16);
+                                    longestSequenceScore = updateScore(longestSequenceScore, HIGH_SCORE);
                                 }
                             }
 
                             //check if a third and fourth piece can be used here
                         } else if (col < 4) {
                             if (state[row][col - 2] != opponentColor && state[row][col - 3] != opponentColor) {
-                                longestSequenceScore = updateScore(longestSequenceScore, 4);
+                                longestSequenceScore = updateScore(longestSequenceScore, MEDIUM_SCORE);
                             }
                         } else {
                             if (state[row][col - 2] != opponentColor && state[row][col - 3] != opponentColor) {
-                                longestSequenceScore = updateScore(longestSequenceScore, 4);
+                                longestSequenceScore = updateScore(longestSequenceScore, MEDIUM_SCORE);
                             }
                         }
 
                         //check if a second, third, and fourth piece can be used here
                     } else if (col < 4) {
                         if (state[row][col + 1] != opponentColor && state[row][col + 2] != opponentColor && state[row][col + 3] != opponentColor) {
-                            longestSequenceScore = updateScore(longestSequenceScore, 4);
+                            longestSequenceScore = updateScore(longestSequenceScore, LOW_SCORE);
                         }
                     } else {
                         if (state[row][col - 1] != opponentColor && state[row][col - 2] != opponentColor && state[row][col - 3] != opponentColor) {
-                            longestSequenceScore = updateScore(longestSequenceScore, 4);
+                            longestSequenceScore = updateScore(longestSequenceScore, LOW_SCORE);
                         }
                     }
                 }
@@ -110,36 +111,36 @@ public class ConnectFourAI {
 
                             //found fourth piece
                             if (state[row + 3][col] == curColor) {
-                                return 10000;
+                                return MAX_SCORE;
 
                                 //check if a fourth piece can be used here
                             } else if (row < 3) {
                                 if (state[row + 3][col] != opponentColor) {
-                                    longestSequenceScore = updateScore(longestSequenceScore, 16);
+                                    longestSequenceScore = updateScore(longestSequenceScore, HIGH_SCORE);
                                 }
                             } else {
                                 if (state[row - 3][col] != opponentColor) {
-                                    longestSequenceScore = updateScore(longestSequenceScore, 16);
+                                    longestSequenceScore = updateScore(longestSequenceScore, HIGH_SCORE);
                                 }
                             }
                             //check if a third and fourth piece can be used here
                         } else if (row < 3) {
                             if (state[row + 2][col] != opponentColor && state[row + 3][col] != opponentColor) {
-                                longestSequenceScore = updateScore(longestSequenceScore, 4);
+                                longestSequenceScore = updateScore(longestSequenceScore, MEDIUM_SCORE);
                             }
                         } else {
                             if (state[row - 2][col] != opponentColor && state[row - 3][col] != opponentColor) {
-                                longestSequenceScore = updateScore(longestSequenceScore, 4);
+                                longestSequenceScore = updateScore(longestSequenceScore, MEDIUM_SCORE);
                             }
                         }
                         //check if a second, third, and fourth piece can be used here
                     } else if (row < 3) {
                         if (state[row + 1][col] != opponentColor && state[row + 2][col] != opponentColor && state[row + 3][col] != opponentColor) {
-                            longestSequenceScore = updateScore(longestSequenceScore, 1);
+                            longestSequenceScore = updateScore(longestSequenceScore, LOW_SCORE);
                         }
                     } else {
                         if (state[row - 1][col] != opponentColor && state[row - 2][col] != opponentColor && state[row - 3][col] != opponentColor) {
-                            longestSequenceScore = updateScore(longestSequenceScore, 1);
+                            longestSequenceScore = updateScore(longestSequenceScore, LOW_SCORE);
                         }
                     }
                 }
@@ -161,19 +162,19 @@ public class ConnectFourAI {
 
                             //found fourth piece
                             if (state[row - 3][col + 3] == curColor) {
-                                return 10000;
+                                return MAX_SCORE;
 
                                 //check if a fourth piece can be used here
                             }  else if (state[row - 3][col + 3] != opponentColor) {
-                                longestSequenceScore = updateScore(longestSequenceScore, 16);
+                                longestSequenceScore = updateScore(longestSequenceScore, HIGH_SCORE);
                             }
                             //check if a third and fourth piece can be used here
                         }  else if (state[row - 2][col + 2] != opponentColor && state[row - 3][col + 3] != opponentColor) {
-                            longestSequenceScore = updateScore(longestSequenceScore, 4);
+                            longestSequenceScore = updateScore(longestSequenceScore, MEDIUM_SCORE);
                         }
                         //check if a second, third, and fourth piece can be used here
                     } else if (state[row - 1][col + 1] != opponentColor && state[row - 2][col + 2] != opponentColor && state[row - 3][col + 3] != opponentColor) {
-                        longestSequenceScore = updateScore(longestSequenceScore, 1);
+                        longestSequenceScore = updateScore(longestSequenceScore, LOW_SCORE);
                     }
                 }
             }
@@ -193,19 +194,19 @@ public class ConnectFourAI {
 
                             //found fourth piece
                             if (state[row + 3][col + 3] == curColor) {
-                                return 10000;
+                                return MAX_SCORE;
 
                                 //check if a fourth piece can be used here
                             }  else if (state[row + 3][col + 3] != opponentColor) {
-                                longestSequenceScore = updateScore(longestSequenceScore, 16);
+                                longestSequenceScore = updateScore(longestSequenceScore, HIGH_SCORE);
                             }
                             //check if a third and fourth piece can be used here
                         }  else if (state[row + 2][col + 2] != opponentColor && state[row + 3][col + 3] != opponentColor) {
-                            longestSequenceScore = updateScore(longestSequenceScore, 4);
+                            longestSequenceScore = updateScore(longestSequenceScore, MEDIUM_SCORE);
                         }
                         //check if a second, third, and fourth piece can be used here
                     } else if (state[row + 1][col + 1] != opponentColor && state[row + 2][col + 2] != opponentColor && state[row + 3][col + 3] != opponentColor) {
-                        longestSequenceScore = updateScore(longestSequenceScore, 1);
+                        longestSequenceScore = updateScore(longestSequenceScore, LOW_SCORE);
                     }
                 }
             }
@@ -214,6 +215,12 @@ public class ConnectFourAI {
         return longestSequenceScore;
     }
 
+    /**
+     * Updates the score value if it's higher than the previous
+     * @param oldScore the old score value
+     * @param newScore the new score value
+     * @return the higher of old or new score
+     */
     private int updateScore(int oldScore, int newScore) {
         if (newScore > oldScore) {
             return newScore;
@@ -230,6 +237,12 @@ public class ConnectFourAI {
         return (int) (Math.random() * 7);
     }
 
+    /**
+     * Checks if the opponent is about to win and blocks the victory
+     * @param state the board
+     * @param opponentColor the color of the opponents pieces
+     * @return the position to place a piece to block the opponent
+     */
     public int blockOpponentPiece(char[][] state, char opponentColor) {
         //by row
         for (int row = 0; row < state.length; row++) {
@@ -282,7 +295,13 @@ public class ConnectFourAI {
         return -1;
     }
 
-    public int randomSelectionBlocking(char[][] state, char curColor, char opponentColor) {
+    /**
+     * An AI that chooses purely random places to drop pieces, until it can block an opponents victory condition
+     * @param state the board
+     * @param opponentColor the opponents piece color
+     * @return the position to place the piece
+     */
+    public int randomSelectionBlocking(char[][] state, char opponentColor) {
         int play = blockOpponentPiece(state, opponentColor);
         if (play != -1) {
             return play;
@@ -291,6 +310,14 @@ public class ConnectFourAI {
         }
     }
 
+    /**
+     * An AI that chooses purely random places to drop pieces until it can block the opponents victory condition,
+     * or until it is one piece placement away from victory
+     * @param state the board
+     * @param curColor the current players piece color
+     * @param opponentColor the opponents piece color
+     * @return the position to place the piece
+     */
     public int randomSelectionBlockingPrioritization(char[][] state, char curColor, char opponentColor) {
         int play = blockOpponentPiece(state, opponentColor);
 

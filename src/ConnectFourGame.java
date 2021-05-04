@@ -139,9 +139,9 @@ public class ConnectFourGame {
         } else if (playerTypeID == 2) {
             do {
                 if (playerID == 1) {
-                    play = computerAI.randomSelectionBlocking(board, 'R', 'B');
+                    play = computerAI.randomSelectionBlocking(board, 'B');
                 } else {
-                    play = computerAI.randomSelectionBlocking(board, 'B', 'R');
+                    play = computerAI.randomSelectionBlocking(board, 'R');
                 }
             } while (!validateMove(play));
         } else if (playerTypeID == 3) {
