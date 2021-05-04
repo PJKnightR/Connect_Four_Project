@@ -8,6 +8,7 @@ public class ConnectFourGame {
     private Scanner input;
     public char[][] board;
     public ConnectFourAI computerAI;
+    public int player1AI, player2AI;
 
     /**
      * Initializes the Connect Four Board
@@ -16,12 +17,49 @@ public class ConnectFourGame {
         input = new Scanner(System.in);
         board = new char[NUM_ROWS][NUM_COLUMNS];
         computerAI = new ConnectFourAI();
+        player1AI = 0;
+        player2AI = 0;
 
         //initialize board
         for (int row = 0; row < board.length; row++){
             for (int col = 0; col < board[0].length; col++){
                 board[row][col] = ' ';
             }
+        }
+
+        player1AI = initializePlayer(1);
+        player2AI = initializePlayer(2);
+    }
+
+    /**
+     * Initializes what type of player each is
+     * @param playerNum the numerical id of the player type (0 being human, 1 being random AI)
+     * @return the numerical player type id
+     */
+    public int initializePlayer(int playerNum) {
+        System.out.println("Is player " + playerNum + " a human or an AI? Enter the corresponding number below:\n1.\tHuman\n2.\tAI");
+        int choice = input.nextInt();
+        while (choice <= 0 || choice > 2) {
+            System.out.println("Please enter a valid option number.");
+            choice = input.nextInt();
+        }
+
+        if (choice == 1) {
+            return 0;
+        } else {
+            System.out.println("Choose an AI for Player " + playerNum + ":\n1.\tRandom Selection AI\n2.\tRandom Selection with Blocking AI\n3.\tRandom Selection with Blocking and Prioritization AI\n-1.\tCancel");
+
+            choice = input.nextInt();
+            while (choice > 3 || choice < -1 || choice == 0) {
+                System.out.println("Please enter a valid option number.");
+                choice = input.nextInt();
+            }
+
+            if (choice == -1) {
+                return initializePlayer(playerNum);
+            }
+
+            return choice;
         }
     }
 
@@ -35,15 +73,10 @@ public class ConnectFourGame {
 
         //play a turn
         while (!winner && turn <= MAX_TURNS){
-            int play;
+            int play = 0;
+            player = 'R';
 
-            do {
-                displayBoard();
-
-                System.out.print("Player " + player + ", choose a column: ");
-                play = input.nextInt() - 1;
-
-            } while (!validateMove(play));
+            play = playerTurn(player1AI, 1);
 
             //drop the checker
             for (int row = board.length-1; row >= 0; row--){
@@ -52,42 +85,35 @@ public class ConnectFourGame {
                     break;
                 }
             }
+
+            displayBoard();
 
             //determine if there is a winner
             winner = isWinner(player);
 
-            //switch players
-            if (player == 'R'){
+            if (!winner) {
                 player = 'B';
-            }else{
-                player = 'R';
-            }
+                play = playerTurn(player2AI, 2);
 
-            play = computerAI.AlphaBetaSearch(board, 1, player);
-
-            //drop the checker
-            for (int row = board.length-1; row >= 0; row--){
-                if(board[row][play] == ' '){
-                    board[row][play] = player;
-                    break;
+                //drop the checker
+                for (int row = board.length-1; row >= 0; row--){
+                    if(board[row][play] == ' '){
+                        board[row][play] = player;
+                        break;
+                    }
                 }
+
+                displayBoard();
+
+                //determine if there is a winner
+                winner = isWinner(player);
             }
 
-            winner = isWinner(player);
-
-            //switch players
-            if (player == 'R'){
-                player = 'B';
-            }else{
-                player = 'R';
-            }
-
-            turn++;
+            turn = turn + 2;
         }
-        displayBoard();
 
         if (winner){
-            if (player == 'R'){
+            if (player == 'B'){
                 System.out.println("Black won");
             } else {
                 System.out.println("Red won");
@@ -95,6 +121,52 @@ public class ConnectFourGame {
         } else {
             System.out.println("Tie game");
         }
+    }
+
+    /**
+     * Returns the column that a player plays a piece in
+     * @param playerTypeID the kind of player performing the action
+     * @param playerID the number of the current player
+     * @return the column that a player plays a piece in
+     */
+    public int playerTurn(int playerTypeID, int playerID) {
+        int play;
+
+        if (playerTypeID == 1) {
+            do {
+                play = computerAI.randomSelection();
+            } while (!validateMove(play));
+        } else if (playerTypeID == 2) {
+            do {
+                if (playerID == 1) {
+                    play = computerAI.randomSelectionBlocking(board, 'B');
+                } else {
+                    play = computerAI.randomSelectionBlocking(board, 'R');
+                }
+            } while (!validateMove(play));
+        } else if (playerTypeID == 3) {
+            do {
+                if (playerID == 1) {
+                    play = computerAI.randomSelectionBlockingPrioritization(board, 'R', 'B');
+                } else {
+                    play = computerAI.randomSelectionBlockingPrioritization(board, 'B', 'R');
+                }
+            } while (!validateMove(play));
+        } else if (playerTypeID == 4) {
+            do {
+                play = computerAI.AlphaBetaSearch(board, 1);
+            } while (!validateMove(play));
+        } else {
+            do {
+                displayBoard();
+
+                System.out.print("Player " + playerID + ", choose a column: ");
+                play = input.nextInt() - 1;
+
+            } while (!validateMove(play));
+        }
+
+        return play;
     }
 
     /**
@@ -131,23 +203,41 @@ public class ConnectFourGame {
     public boolean isWinner(char player) {
         //check for 4 across
         for (int row = 0; row < board.length; row++) {
-            for (int col = 0; col < board[0].length - 3; col++) {
-                if (board[row][col] == player &&
-                        board[row][col + 1] == player &&
-                        board[row][col + 2] == player &&
-                        board[row][col + 3] == player) {
-                    return true;
+            for (int col = 0; col < board[0].length; col++) {
+                if (col < 4) {
+                    if (board[row][col] == player &&
+                            board[row][col + 1] == player &&
+                            board[row][col + 2] == player &&
+                            board[row][col + 3] == player) {
+                        return true;
+                    }
+                } else {
+                    if (board[row][col] == player &&
+                            board[row][col - 1] == player &&
+                            board[row][col - 2] == player &&
+                            board[row][col - 3] == player) {
+                        return true;
+                    }
                 }
             }
         }
         //check for 4 up and down
-        for (int row = 0; row < board.length - 3; row++) {
+        for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[0].length; col++) {
-                if (board[row][col] == player &&
-                        board[row + 1][col] == player &&
-                        board[row + 2][col] == player &&
-                        board[row + 3][col] == player) {
-                    return true;
+                if (row < 3) {
+                    if (board[row][col] == player &&
+                            board[row + 1][col] == player &&
+                            board[row + 2][col] == player &&
+                            board[row + 3][col] == player) {
+                        return true;
+                    }
+                } else {
+                    if (board[row][col] == player &&
+                            board[row - 1][col] == player &&
+                            board[row - 2][col] == player &&
+                            board[row - 3][col] == player) {
+                        return true;
+                    }
                 }
             }
         }
