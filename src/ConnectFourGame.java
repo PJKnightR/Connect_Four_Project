@@ -63,7 +63,7 @@ public class ConnectFourGame {
                 player = 'R';
             }
 
-            play = computerAI.AlphaBetaSearch(board, 1);
+            play = computerAI.AlphaBetaSearch(board, 1, player);
 
             //drop the checker
             for (int row = board.length-1; row >= 0; row--){
