@@ -192,9 +192,9 @@ public class ConnectFourGame {
             do {
                 char p = 'x';
                 if (playerID == 1){
-                    p = 'B';
-                }else{
                     p = 'R';
+                }else{
+                    p = 'B';
                 }
                 play = computerAI.AlphaBetaSearch(board, alphaBetaSearchDepth, p);
             } while (!validateMove(play));

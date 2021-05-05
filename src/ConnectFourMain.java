@@ -11,7 +11,7 @@ public class ConnectFourMain {
             //and Prioritization), 4 (Alpha-Beta Prune)
             
             //for running a large number of games for data comparison
-            ConnectFourGame game = new ConnectFourGame(2, 4, 2, 9);
+            ConnectFourGame game = new ConnectFourGame(0, 4, 2, 0);
             game.StartGame();
 
             //for being able to customize a single game at runtime

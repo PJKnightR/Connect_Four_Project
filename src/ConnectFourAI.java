@@ -83,6 +83,9 @@ public class ConnectFourAI {
                     }
 
                     int min = MinValue(temp, alpha, beta, depth-1, p)[0];
+
+
+
                     if(min > v) {
                         v= min;
                         move = j;
@@ -109,7 +112,7 @@ public class ConnectFourAI {
                 p = 'R';
             }
 
-            return new int[]{FindLongestSequence(state, p, player), -1};
+            return new int[]{FindLongestSequence(state, player, p), -1};
         }
 
         int v = Integer.MAX_VALUE;
@@ -132,7 +135,8 @@ public class ConnectFourAI {
                     }
 
                     int max = MaxValue(temp, alpha, beta, depth-1, p)[0];
-                    if(max > v) {
+
+                    if(max < v) {
                         v= max;
                         move = j;
                     }
