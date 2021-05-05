@@ -11,6 +11,7 @@ public class ConnectFourGame {
     public int player1AI, player2AI;
     public int alphaBetaSearchDepth;
     public int remainingRuns;
+    public int redWins, blackWins;
 
     /**
      * Initializes the Connect Four Board
@@ -22,6 +23,9 @@ public class ConnectFourGame {
         player1AI = 0;
         player2AI = 0;
         remainingRuns = 0;
+        redWins = 0;
+        blackWins = 0;
+        remainingRuns = -1;
 
         //initialize board
         for (int row = 0; row < board.length; row++){
@@ -37,7 +41,7 @@ public class ConnectFourGame {
     /**
      * Initializes the Connect Four Board
      */
-    ConnectFourGame(int player1AIType, int player2AIType, int depth, int runsLeft) {
+    ConnectFourGame(int player1AIType, int player2AIType, int depth, int runsLeft, int red, int black) {
         input = new Scanner(System.in);
         board = new char[NUM_ROWS][NUM_COLUMNS];
         computerAI = new ConnectFourAI();
@@ -45,6 +49,8 @@ public class ConnectFourGame {
         player2AI = player2AIType;
         alphaBetaSearchDepth = depth;
         remainingRuns = runsLeft;
+        redWins = red;
+        blackWins = black;
 
         //initialize board
         for (int row = 0; row < board.length; row++){
@@ -117,7 +123,9 @@ public class ConnectFourGame {
                 }
             }
 
-            displayBoard();
+            if (remainingRuns == -1) {
+                displayBoard();
+            }
 
             //determine if there is a winner
             winner = isWinner(player);
@@ -134,7 +142,9 @@ public class ConnectFourGame {
                     }
                 }
 
-                displayBoard();
+                if (remainingRuns == -1) {
+                    displayBoard();
+                }
 
                 //determine if there is a winner
                 winner = isWinner(player);
@@ -145,17 +155,27 @@ public class ConnectFourGame {
 
         if (winner){
             if (player == 'B'){
-                System.out.println("Black won");
+                if (remainingRuns == -1) {
+                    System.out.println("Black won");
+                }
+
+                blackWins++;
             } else {
-                System.out.println("Red won");
+                if (remainingRuns == -1) {
+                    System.out.println("Red won");
+                }
+
+                redWins++;
             }
         } else {
             System.out.println("Tie game");
         }
 
         if (remainingRuns > 0) {
-            ConnectFourGame game = new ConnectFourGame(player1AI, player2AI, alphaBetaSearchDepth, remainingRuns - 1);
+            ConnectFourGame game = new ConnectFourGame(player1AI, player2AI, alphaBetaSearchDepth, remainingRuns - 1, redWins, blackWins);
             game.StartGame();
+        } else if (remainingRuns != -1) {
+            System.out.println("Black: " + blackWins + " Red: " + redWins);
         }
     }
 
@@ -200,7 +220,9 @@ public class ConnectFourGame {
             } while (!validateMove(play));
         } else {
             do {
-                displayBoard();
+                if (remainingRuns == -1) {
+                    displayBoard();
+                }
 
                 System.out.print("Player " + playerID + ", choose a column: ");
                 play = input.nextInt() - 1;
